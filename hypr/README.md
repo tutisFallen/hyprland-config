@@ -2,6 +2,9 @@
 
 This repository contains my personal Hyprland configuration files. Hyprland is a dynamic tiling Wayland compositor.
 
+## Shell Integration
+I'm using [Exo shell](https://github.com/debuggyo/Exo) to complement these configurations.
+
 ## Structure
 
 - `autostart.conf` - Programs to start with Hyprland
