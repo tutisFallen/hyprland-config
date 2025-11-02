@@ -286,6 +286,65 @@ install_sddm_theme() {
     fi
 }
 
+# Função para baixar wallpapers
+download_wallpapers() {
+    print_header "🖼️ Banco de Wallpapers"
+    
+    echo -e "${CYAN}Deseja baixar o banco de wallpapers JaKooLit?${NC}"
+    echo -e "${YELLOW}Contém:${NC} 454 wallpapers incríveis"
+    echo -e "${RED}⚠ ATENÇÃO: Tamanho aproximado: 1.10 GB${NC}\n"
+    
+    read -p "Baixar wallpapers? (s/N): " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Ss]$ ]]; then
+        local TEMP_WALLPAPER="/tmp/Wallpaper-Bank"
+        local PICTURES_DIR="$HOME/Pictures"
+        local WALLPAPER_DEST="$PICTURES_DIR/Wallpapers"
+        
+        # Remover diretório temporário se existir
+        if [ -d "$TEMP_WALLPAPER" ]; then
+            rm -rf "$TEMP_WALLPAPER"
+        fi
+        
+        print_info "Baixando wallpapers (isso pode demorar um pouco)..."
+        if git clone https://github.com/JaKooLit/Wallpaper-Bank.git "$TEMP_WALLPAPER"; then
+            print_success "Wallpapers baixados!"
+            
+            # Criar pasta Pictures se não existir
+            if [ ! -d "$PICTURES_DIR" ]; then
+                print_info "Criando pasta Pictures..."
+                mkdir -p "$PICTURES_DIR"
+            fi
+            
+            # Remover destino se existir
+            if [ -d "$WALLPAPER_DEST" ]; then
+                print_warning "Removendo wallpapers antigos..."
+                rm -rf "$WALLPAPER_DEST"
+            fi
+            
+            # Mover apenas a pasta wallpapers de dentro do repositório
+            print_info "Movendo wallpapers para $WALLPAPER_DEST..."
+            if [ -d "$TEMP_WALLPAPER/wallpapers" ]; then
+                mv "$TEMP_WALLPAPER/wallpapers" "$WALLPAPER_DEST"
+                print_success "Wallpapers instalados em: $WALLPAPER_DEST"
+                print_info "Total: 454 wallpapers disponíveis!"
+            else
+                print_error "Pasta wallpapers não encontrada no repositório"
+            fi
+            
+            # Limpar diretório temporário
+            rm -rf "$TEMP_WALLPAPER"
+        else
+            print_error "Falha ao baixar wallpapers"
+            print_info "Você pode baixar manualmente depois:"
+            echo -e "  ${YELLOW}git clone https://github.com/JaKooLit/Wallpaper-Bank.git /tmp/Wallpaper-Bank${NC}"
+            echo -e "  ${YELLOW}mv /tmp/Wallpaper-Bank/wallpapers ~/Pictures/Wallpapers${NC}"
+        fi
+    else
+        print_info "Pulando download de wallpapers"
+    fi
+}
+
 # Função para reiniciar sistema
 ask_reboot() {
     print_header "🔄 Reinicialização Necessária"
@@ -334,7 +393,9 @@ EOF
     echo -e "  ${CYAN}2.${NC} Instalar todos os pacotes necessários"
     echo -e "  ${CYAN}3.${NC} Clonar e configurar o Hyprland"
     echo -e "  ${CYAN}4.${NC} Ativar serviços necessários"
-    echo -e "  ${CYAN}5.${NC} Oferecer reinicialização do sistema"
+    echo -e "  ${CYAN}5.${NC} Instalar tema SDDM Astronaut (opcional)"
+    echo -e "  ${CYAN}6.${NC} Baixar banco de wallpapers - 1.10 GB (opcional)"
+    echo -e "  ${CYAN}7.${NC} Oferecer reinicialização do sistema"
     echo -e "\n${YELLOW}Você será perguntado se deseja pular pacotes que falharem.${NC}\n"
     
     read -p "Deseja continuar? (s/N): " -n 1 -r
@@ -367,12 +428,16 @@ EOF
     # Instalar tema SDDM
     install_sddm_theme
     
+    # Baixar wallpapers
+    download_wallpapers
+    
     # Mensagem final
     print_header "🎉 Instalação Concluída!"
     print_success "Todas as configurações foram aplicadas!"
     echo -e "\n${CYAN}Dicas finais:${NC}"
     echo -e "  ${CYAN}•${NC} Configure monitores com: ${YELLOW}nwg-displays${NC}"
     echo -e "  ${CYAN}•${NC} Suas configs antigas (se existiam) foram backupeadas"
+    echo -e "  ${CYAN}•${NC} Wallpapers estão em: ${YELLOW}~/Pictures/Wallpapers${NC} (se instalados)"
     echo -e "  ${CYAN}•${NC} Após reiniciar, selecione ${YELLOW}Hyprland${NC} na tela de login"
     echo ""
     
