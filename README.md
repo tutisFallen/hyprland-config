@@ -56,6 +56,10 @@ hyprland
 dank-material-shell-git  # https://github.com/AvengeMedia/DankMaterialShell
                         # (já inclui matugen para cores dinâmicas)
 
+# Display Manager e Tema
+sddm                    # Display manager
+sddm-astronaut-theme    # Tema espacial para SDDM (opcional)
+
 # Utilitários
 nwg-displays            # Gerenciamento de monitores
 hyprlock               # Screen locker
@@ -169,12 +173,23 @@ O arquivo `monitors.conf` é gerenciado pelo **nwg-displays**, que oferece uma i
 - [Hyprland](https://hyprland.org/) - O compositor Wayland
 - [Dank Material Shell](https://github.com/AvengeMedia/DankMaterialShell) - Interface moderna
 - [nwg-displays](https://github.com/nwg-piotr/nwg-displays) - Gerenciador de monitores
+- [SDDM Astronaut Theme](https://github.com/keyitdev/sddm-astronaut-theme) - Tema espacial para login
 
 ## 📝 Notas
 
 - Esta configuração **não usa Waybar** - todo o gerenciamento de interface é feito pelo Material Shell
 - Os scripts na pasta `scripts/` são auxiliares personalizados
+- O tema SDDM Astronaut é opcional mas altamente recomendado 🚀
+- O script de instalação faz backup automático de configurações antigas
 - Certifique-se de ter todas as dependências instaladas para funcionamento completo
+
+## 🐛 Problemas Conhecidos
+
+Se encontrar algum problema durante a instalação:
+- Verifique se seu sistema está atualizado: `sudo pacman -Syu`
+- Certifique-se de ter `git` instalado
+- Para problemas com pacotes AUR, tente instalar `yay` manualmente primeiro
+- Abra uma [issue no GitHub](https://github.com/tutisFallen/hypr/issues) se o problema persistir
 
 ## 📄 Licença
 
