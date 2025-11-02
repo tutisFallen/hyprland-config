@@ -139,6 +139,10 @@ Hyprland
 | `SUPER + Space` | Launcher |
 | `SUPER + ALT + L` | 🔒 Bloquear tela |
 | `SUPER + [1-9]` | Trocar workspace |
+| `SUPER + Y` | Abre o Seletor de Papel de Parede |
+| `SUPER + ,` | Abre a Tela de Config do DankShell - Recomendo abrir logo. |
+
+
 
 ## 🎨 Personalização
 
