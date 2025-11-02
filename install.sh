@@ -41,6 +41,8 @@ PACOTES_OFICIAIS=(
     "tumbler" "vdpauinfo" "visual-studio-code-bin" "vulkan-radeon"
     "vulkan-tools" "waybar" "wireplumber" "xdg-desktop-portal-wlr"
     "yay" "zip" "zram-generator"
+    # Dependências para Web Scraper
+    "python-beautifulsoup4" "python-requests" "chromium" "chromedriver"
 )
 
 PACOTES_AUR=(
@@ -52,6 +54,8 @@ PACOTES_AUR=(
     "python-materialyoucolor-git" "ttf-material-icons-git"
     "ttf-material-symbols-variable-git" "woff2-font-awesome"
     "woff2-material-symbols-variable-git"
+    # Dependência para Web Scraper
+    "python-selenium"
 )
 
 # Contadores
