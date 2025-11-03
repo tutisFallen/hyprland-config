@@ -210,7 +210,7 @@ setup_configs() {
     
     # Clonar repositório
     print_info "Clonando repositório..."
-    if git clone https://github.com/tutisFallen/hypr.git "$TEMP_DIR"; then
+    if git clone https://github.com/tutisFallen/Hyprland-Config.git "$TEMP_DIR"; then
         print_success "Repositório clonado com sucesso!"
     else
         print_error "Falha ao clonar repositório"
