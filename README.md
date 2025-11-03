@@ -85,7 +85,7 @@ O método mais fácil e rápido! Nosso script automatizado vai fazer tudo por vo
 
 ```bash
 # Baixe e execute o script de instalação
-curl -fsSL https://raw.githubusercontent.com/tutisFallen/hypr/main/install.sh -o install.sh
+curl -fsSL https://raw.githubusercontent.com/tutisFallen/Hyprland-Config/main/install.sh -o install.sh
 chmod +x install.sh
 ./install.sh
 ```
@@ -108,26 +108,6 @@ chmod +x install.sh
 
 ---
 
-### Instalação Manual 🔧
-
-Se preferir ter mais controle sobre o processo:
-
-1. **Clone este repositório**
-```bash
-git clone https://github.com/tutisFallen/hypr.git ~/.config/hypr
-```
-
-2. **Instale as dependências** (veja seção abaixo)
-```bash
-nwg-displays
-# Após configurar, copie a saída para monitors.conf
-```
-
-3. **Inicie o Hyprland**
-```bash
-Hyprland
-```
-
 ## ⚡ Atalhos Principais
 
 > Verifique `configs/keybinds.conf` para a lista completa de atalhos!
@@ -149,10 +129,12 @@ Hyprland
 ### Cores
 As cores são geradas **automaticamente** pelo `matugen` (incluído no Dank Material Shell) baseado no seu wallpaper! 🎨
 
+tem um script de wallpaper dentro da pasta script que puxa da internet varios wallpaper legais.
+
 Quando você muda o papel de parede, o `matugen` extrai as cores dominantes e atualiza todo o tema automaticamente. O arquivo `configs/colors.conf` é gerado dinamicamente.
 
 ### Monitores
-Use `nwg-displays` para configurar visualmente seus monitores:
+Use `nwg-displays` para configurar visualmente seus monitores eu uso 2 monitores então recomendo abrir e configurar o seu e um app chamado `Displays Settings` ou pode rodar no terminal oque - :
 ```bash
 nwg-displays
 ```
@@ -197,7 +179,7 @@ Se encontrar algum problema durante a instalação:
 
 ## 📄 Licença
 
-Configuração pessoal - use e modifique como quiser! 🎉
+Configuração pessoal eu não fiz pensando em todos então - use e modifique como quiser! 🎉
 
 ---
 
