@@ -44,7 +44,6 @@ HYPR/
 - **🎭 Material Shell**: Interface moderna e produtiva sem Waybar
 - **🚀 Otimizado**: Configurações pensadas para performance e workflow eficiente
 - **🔒 Segurança**: Hyprlock configurado para screen locking
-- **🖼️ Hyprpaper**: Gerenciamento de wallpapers integrado
 - **🌈 Cores Dinâmicas**: Esquema de cores gerado automaticamente via `matugen` baseado no wallpaper
 
 ## 📦 Dependências
@@ -91,15 +90,15 @@ chmod +x install.sh
 ```
 
 **O que o script faz:**
-- ✅ Atualiza seu sistema
-- ✅ Instala `yay` (se necessário)
-- ✅ Instala todos os pacotes necessários (oficiais + AUR)
-- ✅ Clona este repositório
-- ✅ Faz backup da sua configuração antiga (se existir)
-- ✅ Copia as novas configurações para `~/.config/hypr`
-- ✅ Ativa serviços necessários (Bluetooth, SDDM)
-- ✅ Instala o tema SDDM Astronaut 🚀
-- ✅ Oferece reinicialização automática
+- ✅ Atualiza seu sistema.
+- ✅ Instala `yay` (se necessário).
+- ✅ Instala todos os pacotes necessários (oficiais + AUR).
+- ✅ Clona este repositório.
+- ✅ Faz backup da sua configuração antiga (se existir).
+- ✅ Copia as novas configurações para `~/.config/hypr`.
+- ✅ Ativa serviços necessários (Bluetooth, SDDM).
+- ✅ Instala o tema SDDM `Da sua Escolha`. 🚀
+- ✅ Oferece reinicialização automática.
 
 **Tratamento de Erros:**
 - Se algum pacote falhar, você pode escolher pular e continuar
@@ -121,6 +120,8 @@ chmod +x install.sh
 | `SUPER + [1-9]` | Trocar workspace |
 | `SUPER + Y` | Abre o Seletor de Papel de Parede |
 | `SUPER + ,` | Abre a Tela de Config do DankShell - Recomendo abrir logo. |
+| `SUPER + SHIFT + M` | Abre o Code ja na pasta `~/.config/hypr` |
+
 
 
 
@@ -134,7 +135,7 @@ tem um script de wallpaper dentro da pasta script que puxa da internet varios wa
 Quando você muda o papel de parede, o `matugen` extrai as cores dominantes e atualiza todo o tema automaticamente. O arquivo `configs/colors.conf` é gerado dinamicamente.
 
 ### Monitores
-Use `nwg-displays` para configurar visualmente seus monitores eu uso 2 monitores então recomendo abrir e configurar o seu e um app chamado `Displays Settings` ou pode rodar no terminal oque - :
+Use `nwg-displays` para configurar visualmente seus monitores , eu uso 2 monitores então recomendo abrir e configurar o seu. e um app chamado `Displays Settings` ou pode rodar no terminal :
 ```bash
 nwg-displays
 ```
