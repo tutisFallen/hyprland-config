@@ -18,436 +18,425 @@ print_error() { echo -e "${RED}✗${NC} $1"; }
 print_warning() { echo -e "${YELLOW}⚠${NC} $1"; }
 print_info() { echo -e "${CYAN}ℹ${NC} $1"; }
 print_header() { echo -e "\n${MAGENTA}═══════════════════════════════════════${NC}\n${BLUE}$1${NC}\n${MAGENTA}═══════════════════════════════════════${NC}\n"; }
+print_step() { echo -e "${BLUE}➜${NC} $1"; }
 
-# Arrays de pacotes
-PACOTES_OFICIAIS=(
-    "base" "base-devel" "bluez" "bluez-utils" "btop" "cava"
-    "chaotic-keyring" "chaotic-mirrorlist" "cli11" "cliphist"
-    "cmake" "cmatrix" "dart-sass" "dolphin" "efibootmgr"
-    "evtest" "fastfetch" "ffmpegthumbnailer" "flatpak" "fzf"
-    "gamemode" "gamescope" "git" "gnome-bluetooth"
-    "gnome-bluetooth-3.0" "gnome-control-center" "gst-plugin-pipewire"
-    "gum" "hyprland" "hyprlock" "hyprpaper" "hyprpicker"
-    "hyprpolkitagent" "hyprshot" "hyprsunset" "intel-ucode"
-    "inxi" "jemalloc" "kitty" "lib32-gamemode" "libpulse"
-    "libva-utils" "libvdpau-va-gl" "linux" "linux-firmware"
-    "mangohud" "mate-polkit" "nano" "noto-fonts" "noto-fonts-cjk"
-    "noto-fonts-emoji" "nwg-displays" "papirus-icon-theme" "paru"
-    "pipewire" "pipewire-alsa" "pipewire-jack" "pipewire-pulse"
-    "polychromatic" "power-profiles-daemon" "python-j2cli"
-    "python-numpy" "python-pip" "qt6-virtualkeyboard" "rofi"
-    "sddm" "speedtest-cli" "steam" "swww" "thunar" "ttf-dejavu"
+# Arrays de pacotes organizados por categoria
+PACOTES_BASE=(
+    "base" "base-devel" "linux" "linux-firmware" "efibootmgr" "intel-ucode"
+)
+
+PACOTES_ESSENCIAIS=(
+    "git" "nano" "zip" "unzip" "sudo" "curl" "wget" "fzf" "gum"
+)
+
+PACOTES_HYPRLAND=(
+    "hyprland" "hyprlock" "hyprpaper" "hyprpicker" "hyprpolkitagent" 
+    "hyprshot" "hyprsunset" "waybar" "rofi" "kitty" "dolphin" "thunar"
+)
+
+PACOTES_AUDIO=(
+    "pipewire" "pipewire-alsa" "pipewire-pulse" "pipewire-jack" 
+    "wireplumber" "libpulse"
+)
+
+PACOTES_GPU=(
+    "vulkan-radeon" "vulkan-tools" "libva-utils" "libvdpau-va-gl" "vdpauinfo"
+)
+
+PACOTES_UTILITARIOS=(
+    "btop" "cava" "cmatrix" "fastfetch" "inxi" "speedtest-cli" "cliphist"
+    "ffmpegthumbnailer" "tumbler" "gamemode" "gamescope" "lib32-gamemode"
+    "mangohud" "polychromatic" "power-profiles-daemon"
+)
+
+PACOTES_FONTES=(
+    "noto-fonts" "noto-fonts-cjk" "noto-fonts-emoji" "ttf-dejavu"
     "ttf-jetbrains-mono-nerd" "ttf-liberation" "ttf-nerd-fonts-symbols-mono"
-    "tumbler" "vdpauinfo" "visual-studio-code-bin" "vulkan-radeon"
-    "vulkan-tools" "waybar" "wireplumber" "xdg-desktop-portal-wlr"
-    "yay" "zip" "zram-generator"
-    # Dependências para Web Scraper
+)
+
+PACOTES_SISTEMA=(
+    "bluez" "bluez-utils" "gnome-bluetooth" "gnome-bluetooth-3.0"
+    "gnome-control-center" "flatpak" "sddm" "xdg-desktop-portal-wlr"
+    "mate-polkit" "zram-generator"
+)
+
+PACOTES_DESENVOLVIMENTO=(
+    "visual-studio-code-bin" "dart-sass" "cmake" "cli11" "jemalloc"
+    "python-pip" "python-numpy" "python-j2cli"
     "python-beautifulsoup4" "python-requests" "chromium" "chromedriver"
 )
 
-PACOTES_AUR=(
-    "adwaita-dark" "dgop-bin" "dms-shell-git" "gbm"
-    "google-breakpad" "gtk2" "ignis-gvc" "libopenrazer"
-    "linuxtoys-bin" "matugen-bin" "mono-basic" "openrazer-meta-git"
-    "python-ignis-git" "quickshell" "razercommander" "razergenie"
-    "rustdesk" "vicinae-bin" "yt-x-git" "gpu-screen-recorder-git"
-    "python-materialyoucolor-git" "ttf-material-icons-git"
-    "ttf-material-symbols-variable-git" "woff2-font-awesome"
-    "woff2-material-symbols-variable-git"
-    # Dependência para Web Scraper
-    "python-selenium"
+PACOTES_AUR_ESSENCIAIS=(
+    "paru" "yay" "adwaita-dark" "matugen-bin" "quickshell" "rustdesk"
+    "gpu-screen-recorder-git" "linuxtoys-bin" "vicinae-bin" "yt-x-git"
 )
 
-# Contadores
+PACOTES_AUR_RAZER=(
+    "openrazer-meta-git" "razergenie" "razercommander" "libopenrazer"
+    "python-ignis-git" "dgop-bin" "ignis-gvc" "gbm" "google-breakpad" "gtk2"
+)
+
+PACOTES_AUR_THEMES=(
+    "ttf-material-icons-git" "ttf-material-symbols-variable-git"
+    "woff2-font-awesome" "woff2-material-symbols-variable-git"
+    "python-materialyoucolor-git" "mono-basic" "dms-shell-git"
+)
+
+# Combinar todos os pacotes oficiais
+PACOTES_OFICIAIS=(
+    "${PACOTES_BASE[@]}" "${PACOTES_ESSENCIAIS[@]}" "${PACOTES_HYPRLAND[@]}"
+    "${PACOTES_AUDIO[@]}" "${PACOTES_GPU[@]}" "${PACOTES_UTILITARIOS[@]}"
+    "${PACOTES_FONTES[@]}" "${PACOTES_SISTEMA[@]}" "${PACOTES_DESENVOLVIMENTO[@]}"
+)
+
+# Combinar todos os pacotes AUR
+PACOTES_AUR=(
+    "${PACOTES_AUR_ESSENCIAIS[@]}" "${PACOTES_AUR_RAZER[@]}" "${PACOTES_AUR_THEMES[@]}"
+)
+
+# Variáveis globais
 SUCCESS_COUNT=0
 FAILED_COUNT=0
 SKIPPED_COUNT=0
 FAILED_PACKAGES=()
+TEMP_DIR="/tmp/hyprland-installer"
+LOG_FILE="$TEMP_DIR/installation.log"
 
-# Verificar se está rodando como root
-if [[ $EUID -eq 0 ]]; then
-   print_error "Não rode este script como root!"
-   exit 1
-fi
+# Criar diretório temporário e arquivo de log
+mkdir -p "$TEMP_DIR"
+exec > >(tee -a "$LOG_FILE") 2>&1
 
-# Verificar se yay está instalado
-check_yay() {
-    if ! command -v yay &> /dev/null; then
-        print_warning "yay não está instalado. Instalando..."
-        sudo pacman -S --needed git base-devel
-        git clone https://aur.archlinux.org/yay.git /tmp/yay
-        cd /tmp/yay
-        makepkg -si --noconfirm
-        cd -
-        rm -rf /tmp/yay
-        if command -v yay &> /dev/null; then
-            print_success "yay instalado com sucesso!"
-        else
-            print_error "Falha ao instalar yay. Por favor, instale manualmente."
-            exit 1
-        fi
+# ===== FUNÇÕES DE UTILIDADE =====
+
+# Função para limpar em caso de interrupção
+cleanup() {
+    echo
+    print_warning "Script interrompido pelo usuário"
+    print_info "Log salvo em: $LOG_FILE"
+    exit 1
+}
+
+trap cleanup SIGINT
+
+# Função para verificar conexão com internet
+check_internet() {
+    print_step "Verificando conexão com a internet..."
+    if ! curl -Is https://archlinux.org > /dev/null 2>&1; then
+        print_error "Sem conexão com a internet!"
+        exit 1
+    fi
+    print_success "Conexão OK"
+}
+
+# Função para verificar se é Arch Linux
+check_arch() {
+    if [[ ! -f /etc/arch-release ]]; then
+        print_error "Este script só funciona no Arch Linux!"
+        exit 1
     fi
 }
 
-# Função para perguntar se pula o pacote
-ask_skip() {
-    local package=$1
-    echo -e "\n${YELLOW}Pacote '${package}' falhou.${NC}"
-    read -p "Deseja pular este pacote e continuar? (s/N): " -n 1 -r
+# Função para verificar se está rodando como root
+check_root() {
+    if [[ $EUID -eq 0 ]]; then
+        print_error "Não rode este script como root!"
+        exit 1
+    fi
+}
+
+# Função para confirmar execução
+confirm_execution() {
+    echo -e "\n${YELLOW}Este script irá instalar:${NC}"
+    echo -e "  ${CYAN}•${NC} ${#PACOTES_OFICIAIS[@]} pacotes oficiais"
+    echo -e "  ${CYAN}•${NC} ${#PACOTES_AUR[@]} pacotes do AUR"
+    echo -e "  ${CYAN}•${NC} Configuração completa do Hyprland"
+    echo -e "  ${CYAN}•${NC} Tema SDDM Astronaut (opcional)"
+    echo -e "  ${CYAN}•${NC} Wallpapers (1.1GB, opcional)"
+    echo -e "\n${RED}⚠  ATENÇÃO: Isso modificará seu sistema!${NC}"
+    
+    read -p $'\n'"Continuar? (s/N): " -n 1 -r
     echo
-    if [[ $REPLY =~ ^[Ss]$ ]]; then
+    if [[ ! $REPLY =~ ^[Ss]$ ]]; then
+        print_warning "Instalação cancelada"
+        exit 0
+    fi
+}
+
+# ===== FUNÇÕES DE INSTALAÇÃO =====
+
+# Função para instalar yay se necessário
+install_yay() {
+    if command -v yay &> /dev/null; then
+        print_success "yay já está instalado"
+        return 0
+    fi
+
+    print_step "Instalando yay..."
+    if sudo pacman -S --needed --noconfirm git base-devel && \
+       git clone https://aur.archlinux.org/yay.git /tmp/yay && \
+       cd /tmp/yay && \
+       makepkg -si --noconfirm; then
+        cd -
+        rm -rf /tmp/yay
+        print_success "yay instalado com sucesso!"
         return 0
     else
+        print_error "Falha ao instalar yay"
         return 1
     fi
 }
 
-# Função para instalar pacotes oficiais
-install_official() {
-    print_header "📦 Instalando Pacotes Oficiais (pacman)"
+# Função para verificar se pacote existe no repositório
+package_exists() {
+    local package=$1
+    local repo=$2
     
-    for package in "${PACOTES_OFICIAIS[@]}"; do
-        if pacman -Qi "$package" &> /dev/null; then
-            print_info "$package já está instalado"
-            ((SUCCESS_COUNT++))
-        else
-            echo -e "\n${CYAN}Instalando:${NC} $package"
-            if sudo pacman -S --needed --noconfirm "$package" 2>&1 | grep -q "error: target not found"; then
-                print_error "Pacote '$package' não encontrado"
-                if ask_skip "$package"; then
-                    print_warning "Pulando $package"
-                    FAILED_PACKAGES+=("$package (oficial)")
-                    ((SKIPPED_COUNT++))
-                else
-                    print_error "Instalação cancelada pelo usuário"
-                    exit 1
-                fi
-            else
-                if pacman -Qi "$package" &> /dev/null; then
-                    print_success "$package instalado"
-                    ((SUCCESS_COUNT++))
-                else
-                    print_error "Falha ao instalar $package"
-                    if ask_skip "$package"; then
-                        FAILED_PACKAGES+=("$package (oficial)")
-                        ((SKIPPED_COUNT++))
-                    else
-                        exit 1
-                    fi
-                fi
-            fi
-        fi
-    done
+    if [[ $repo == "official" ]]; then
+        pacman -Si "$package" &> /dev/null
+    else
+        yay -Si "$package" &> /dev/null
+    fi
 }
 
-# Função para instalar pacotes do AUR
-install_aur() {
-    print_header "🔧 Instalando Pacotes do AUR (yay)"
+# Função para verificar se pacote está instalado
+is_package_installed() {
+    local package=$1
+    local repo=$2
     
-    for package in "${PACOTES_AUR[@]}"; do
-        if yay -Qi "$package" &> /dev/null; then
-            print_info "$package já está instalado"
-            ((SUCCESS_COUNT++))
-        else
-            echo -e "\n${CYAN}Instalando:${NC} $package"
-            if yay -S --needed --noconfirm "$package" 2>&1 | grep -q "error: target not found\|error: package"; then
-                print_error "Pacote '$package' não encontrado no AUR"
-                if ask_skip "$package"; then
-                    print_warning "Pulando $package"
-                    FAILED_PACKAGES+=("$package (AUR)")
-                    ((SKIPPED_COUNT++))
-                else
-                    print_error "Instalação cancelada pelo usuário"
-                    exit 1
-                fi
-            else
-                if yay -Qi "$package" &> /dev/null; then
-                    print_success "$package instalado"
-                    ((SUCCESS_COUNT++))
-                else
-                    print_error "Falha ao instalar $package"
-                    if ask_skip "$package"; then
-                        FAILED_PACKAGES+=("$package (AUR)")
-                        ((SKIPPED_COUNT++))
-                    else
-                        exit 1
-                    fi
-                fi
-            fi
-        fi
-    done
+    if [[ $repo == "official" ]]; then
+        pacman -Qi "$package" &> /dev/null
+    else
+        yay -Qi "$package" &> /dev/null
+    fi
 }
 
-# Função para mostrar resumo
-show_summary() {
-    print_header "📊 Resumo da Instalação"
+# Função para instalar pacote individual
+install_package() {
+    local package=$1
+    local repo=$2
     
-    echo -e "${GREEN}✓ Instalados/Já instalados:${NC} $SUCCESS_COUNT"
-    echo -e "${YELLOW}⚠ Pulados:${NC} $SKIPPED_COUNT"
-    
-    if [ ${#FAILED_PACKAGES[@]} -gt 0 ]; then
-        echo -e "\n${RED}Pacotes que falharam/foram pulados:${NC}"
-        for pkg in "${FAILED_PACKAGES[@]}"; do
-            echo -e "  ${RED}•${NC} $pkg"
-        done
+    if is_package_installed "$package" "$repo"; then
+        print_info "$package já está instalado"
+        ((SUCCESS_COUNT++))
+        return 0
     fi
     
-    echo -e "\n${CYAN}═══════════════════════════════════════${NC}"
+    if ! package_exists "$package" "$repo"; then
+        print_error "$package não encontrado no $repo"
+        FAILED_PACKAGES+=("$package ($repo)")
+        ((SKIPPED_COUNT++))
+        return 1
+    fi
+    
+    print_step "Instalando $package..."
+    if [[ $repo == "official" ]]; then
+        if sudo pacman -S --needed --noconfirm "$package"; then
+            print_success "$package instalado"
+            ((SUCCESS_COUNT++))
+            return 0
+        fi
+    else
+        if yay -S --needed --noconfirm "$package"; then
+            print_success "$package instalado"
+            ((SUCCESS_COUNT++))
+            return 0
+        fi
+    fi
+    
+    print_error "Falha ao instalar $package"
+    FAILED_PACKAGES+=("$package ($repo)")
+    ((SKIPPED_COUNT++))
+    return 1
 }
 
-# Função para clonar repositório e copiar configs
-setup_configs() {
-    print_header "📥 Configurando Hyprland"
+# Função para instalar grupos de pacotes
+install_package_group() {
+    local group_name=$1
+    local packages=("${!2}")
+    local repo=$3
     
-    local TEMP_DIR="/tmp/hypr-config"
+    print_header "📦 Instalando $group_name"
+    
+    for package in "${packages[@]}"; do
+        install_package "$package" "$repo"
+    done
+}
+
+# ===== FUNÇÕES DE CONFIGURAÇÃO =====
+
+# Função para configurar Hyprland
+setup_hyprland() {
+    print_header "🎨 Configurando Hyprland"
+    
     local CONFIG_DIR="$HOME/.config/hypr"
+    local BACKUP_DIR="$HOME/.config/hypr.backup.$(date +%Y%m%d_%H%M%S)"
     
-    # Remover diretório temporário se existir
-    if [ -d "$TEMP_DIR" ]; then
-        print_info "Removendo diretório temporário antigo..."
-        rm -rf "$TEMP_DIR"
+    # Backup se existir
+    if [[ -d "$CONFIG_DIR" ]]; then
+        print_step "Fazendo backup da configuração existente..."
+        mv "$CONFIG_DIR" "$BACKUP_DIR"
+        print_success "Backup criado: $BACKUP_DIR"
     fi
     
     # Clonar repositório
-    print_info "Clonando repositório..."
-    if git clone https://github.com/tutisFallen/Hyprland-Config.git "$TEMP_DIR"; then
-        print_success "Repositório clonado com sucesso!"
+    print_step "Clonando repositório de configuração..."
+    if git clone https://github.com/tutisFallen/Hyprland-Config.git "$CONFIG_DIR"; then
+        print_success "Configurações clonadas"
     else
         print_error "Falha ao clonar repositório"
-        exit 1
+        return 1
     fi
     
-    # Fazer backup da configuração existente
-    if [ -d "$CONFIG_DIR" ]; then
-        local BACKUP_DIR="$HOME/.config/hypr.backup.$(date +%Y%m%d_%H%M%S)"
-        print_warning "Configuração existente encontrada!"
-        print_info "Criando backup em: $BACKUP_DIR"
-        mv "$CONFIG_DIR" "$BACKUP_DIR"
-        print_success "Backup criado!"
+    # Configurar permissões
+    if [[ -d "$CONFIG_DIR/scripts" ]]; then
+        chmod +x "$CONFIG_DIR/scripts/"*
+        print_success "Permissões configuradas"
     fi
     
-    # Criar diretório de config
-    mkdir -p "$HOME/.config"
-    
-    # Copiar configurações
-    print_info "Copiando configurações para $CONFIG_DIR..."
-    cp -r "$TEMP_DIR" "$CONFIG_DIR"
-    print_success "Configurações copiadas!"
-    
-    # Limpar diretório temporário
-    rm -rf "$TEMP_DIR"
-    
-    # Dar permissões corretas
-    chmod -R 755 "$CONFIG_DIR"
-    if [ -d "$CONFIG_DIR/scripts" ]; then
-        chmod +x "$CONFIG_DIR/scripts/"* 2>/dev/null
-        print_success "Permissões configuradas!"
-    fi
+    return 0
 }
 
 # Função para ativar serviços
 enable_services() {
     print_header "🔧 Ativando Serviços"
     
-    # Bluetooth
-    if systemctl is-enabled bluetooth &> /dev/null; then
-        print_info "Bluetooth já está ativado"
-    else
-        print_info "Ativando Bluetooth..."
-        sudo systemctl enable --now bluetooth
-        print_success "Bluetooth ativado!"
-    fi
+    local services=("bluetooth" "sddm")
     
-    # SDDM
-    if systemctl is-enabled sddm &> /dev/null; then
-        print_info "SDDM já está ativado"
-    else
-        print_info "Ativando SDDM..."
-        sudo systemctl enable sddm
-        print_success "SDDM ativado!"
-    fi
+    for service in "${services[@]}"; do
+        print_step "Ativando $service..."
+        if sudo systemctl enable "$service" 2>/dev/null; then
+            print_success "$service ativado"
+        else
+            print_warning "Não foi possível ativar $service"
+        fi
+    done
 }
 
 # Função para instalar tema SDDM
 install_sddm_theme() {
-    print_header "🎨 Instalando Tema SDDM Astronaut"
+    print_header "🌙 Instalando Tema SDDM Astronaut"
     
-    echo -e "${CYAN}Este tema dá um visual espacial incrível para sua tela de login!${NC}\n"
-    
-    read -p "Deseja instalar o tema SDDM Astronaut? (S/n): " -n 1 -r
+    read -p "Instalar tema SDDM Astronaut? (S/n): " -n 1 -r
     echo
-    if [[ ! $REPLY =~ ^[Nn]$ ]]; then
-        print_info "Instalando tema SDDM Astronaut..."
-        if sh -c "$(curl -fsSL https://raw.githubusercontent.com/keyitdev/sddm-astronaut-theme/master/setup.sh)"; then
-            print_success "Tema SDDM Astronaut instalado com sucesso!"
-        else
-            print_warning "Falha ao instalar tema SDDM (não crítico)"
-            print_info "Você pode instalar manualmente depois com:"
-            echo -e "  ${YELLOW}sh -c \"\$(curl -fsSL https://raw.githubusercontent.com/keyitdev/sddm-astronaut-theme/master/setup.sh)\"${NC}"
-        fi
+    if [[ $REPLY =~ ^[Nn]$ ]]; then
+        print_info "Tema SDDM pulado"
+        return 0
+    fi
+    
+    print_step "Instalando tema SDDM Astronaut..."
+    if curl -fsSL https://raw.githubusercontent.com/keyitdev/sddm-astronaut-theme/master/setup.sh | sh; then
+        print_success "Tema SDDM instalado"
     else
-        print_info "Pulando instalação do tema SDDM"
+        print_warning "Falha ao instalar tema SDDM"
     fi
 }
 
 # Função para baixar wallpapers
 download_wallpapers() {
-    print_header "🖼️ Banco de Wallpapers"
+    print_header "🖼️  Baixando Wallpapers"
     
-    echo -e "${CYAN}Deseja baixar o banco de wallpapers JaKooLit?${NC}"
-    echo -e "${YELLOW}Contém:${NC} 454 wallpapers incríveis"
-    echo -e "${RED}⚠ ATENÇÃO: Tamanho aproximado: 1.10 GB${NC}\n"
-    
+    echo -e "${YELLOW}Tamanho: ~1.1GB - Pode demorar dependendo da conexão${NC}"
     read -p "Baixar wallpapers? (s/N): " -n 1 -r
     echo
-    if [[ $REPLY =~ ^[Ss]$ ]]; then
-        local TEMP_WALLPAPER="/tmp/Wallpaper-Bank"
-        local PICTURES_DIR="$HOME/Pictures"
-        local WALLPAPER_DEST="$PICTURES_DIR/Wallpapers"
-        
-        # Remover diretório temporário se existir
-        if [ -d "$TEMP_WALLPAPER" ]; then
-            rm -rf "$TEMP_WALLPAPER"
-        fi
-        
-        print_info "Baixando wallpapers (isso pode demorar um pouco)..."
-        if git clone https://github.com/JaKooLit/Wallpaper-Bank.git "$TEMP_WALLPAPER"; then
-            print_success "Wallpapers baixados!"
-            
-            # Criar pasta Pictures se não existir
-            if [ ! -d "$PICTURES_DIR" ]; then
-                print_info "Criando pasta Pictures..."
-                mkdir -p "$PICTURES_DIR"
-            fi
-            
-            # Remover destino se existir
-            if [ -d "$WALLPAPER_DEST" ]; then
-                print_warning "Removendo wallpapers antigos..."
-                rm -rf "$WALLPAPER_DEST"
-            fi
-            
-            # Mover apenas a pasta wallpapers de dentro do repositório
-            print_info "Movendo wallpapers para $WALLPAPER_DEST..."
-            if [ -d "$TEMP_WALLPAPER/wallpapers" ]; then
-                mv "$TEMP_WALLPAPER/wallpapers" "$WALLPAPER_DEST"
-                print_success "Wallpapers instalados em: $WALLPAPER_DEST"
-                print_info "Total: 454 wallpapers disponíveis!"
-            else
-                print_error "Pasta wallpapers não encontrada no repositório"
-            fi
-            
-            # Limpar diretório temporário
-            rm -rf "$TEMP_WALLPAPER"
+    if [[ ! $REPLY =~ ^[Ss]$ ]]; then
+        print_info "Wallpapers pulados"
+        return 0
+    fi
+    
+    local WALLPAPER_DIR="$HOME/Pictures/Wallpapers"
+    local TEMP_DIR="/tmp/wallpaper-temp"
+    
+    print_step "Baixando wallpapers..."
+    if git clone https://github.com/JaKooLit/Wallpaper-Bank.git "$TEMP_DIR"; then
+        mkdir -p "$(dirname "$WALLPAPER_DIR")"
+        if [[ -d "$TEMP_DIR/wallpapers" ]]; then
+            mv "$TEMP_DIR/wallpapers" "$WALLPAPER_DIR"
+            print_success "Wallpapers instalados em: $WALLPAPER_DIR"
         else
-            print_error "Falha ao baixar wallpapers"
-            print_info "Você pode baixar manualmente depois:"
-            echo -e "  ${YELLOW}git clone https://github.com/JaKooLit/Wallpaper-Bank.git /tmp/Wallpaper-Bank${NC}"
-            echo -e "  ${YELLOW}mv /tmp/Wallpaper-Bank/wallpapers ~/Pictures/Wallpapers${NC}"
+            print_error "Pasta de wallpapers não encontrada"
         fi
+        rm -rf "$TEMP_DIR"
     else
-        print_info "Pulando download de wallpapers"
+        print_error "Falha ao baixar wallpapers"
     fi
 }
 
-# Função para reiniciar sistema
+# ===== FUNÇÕES DE RELATÓRIO =====
+
+# Função para mostrar resumo
+show_summary() {
+    print_header "📊 Relatório da Instalação"
+    
+    echo -e "${GREEN}✓ Sucesso:${NC} $SUCCESS_COUNT pacotes"
+    echo -e "${YELLOW}⚠ Pulados:${NC} $SKIPPED_COUNT pacotes"
+    
+    if [[ ${#FAILED_PACKAGES[@]} -gt 0 ]]; then
+        echo -e "\n${RED}❌ Pacotes com problemas:${NC}"
+        printf '  %s\n' "${FAILED_PACKAGES[@]}"
+    fi
+    
+    echo -e "\n${CYAN}📝 Log completo:${NC} $LOG_FILE"
+}
+
+# Função para perguntar reinicialização
 ask_reboot() {
-    print_header "🔄 Reinicialização Necessária"
+    print_header "🔄 Reinicialização"
     
-    echo -e "${YELLOW}Para aplicar todas as configurações, é recomendado reiniciar o sistema.${NC}"
-    echo -e "${CYAN}Após reiniciar, selecione Hyprland na tela de login.${NC}\n"
-    
-    read -p "Deseja reiniciar agora? (s/N): " -n 1 -r
+    echo -e "${YELLOW}Recomenda-se reiniciar para aplicar todas as configurações${NC}"
+    read -p "Reiniciar agora? (s/N): " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Ss]$ ]]; then
-        print_info "Reiniciando em 5 segundos..."
-        sleep 1
-        print_warning "5..."
-        sleep 1
-        print_warning "4..."
-        sleep 1
-        print_warning "3..."
-        sleep 1
-        print_warning "2..."
-        sleep 1
-        print_warning "1..."
-        sleep 1
-        print_success "Reiniciando sistema!"
+        print_step "Reiniciando em 5 segundos..."
+        for i in {5..1}; do
+            echo -e "${YELLOW}$i...${NC}"
+            sleep 1
+        done
+        print_success "Reiniciando!"
         sudo reboot
     else
-        print_info "Reinicialização adiada."
-        echo -e "\n${CYAN}Para reiniciar depois, execute:${NC} ${YELLOW}sudo reboot${NC}\n"
+        print_info "Execute 'sudo reboot' quando quiser reiniciar"
     fi
 }
 
-# Função principal
+# ===== FUNÇÃO PRINCIPAL =====
 main() {
     clear
+    
+    # Banner
     echo -e "${MAGENTA}"
     cat << "EOF"
     ╦ ╦╦ ╦╔═╗╦═╗  ╦╔╗╔╔═╗╔╦╗╔═╗╦  ╦  
     ╠═╣╚╦╝╠═╝╠╦╝  ║║║║╚═╗ ║ ╠═╣║  ║  
     ╩ ╩ ╩ ╩  ╩╚═  ╩╝╚╝╚═╝ ╩ ╩ ╩╩═╝╩═╝
+     Hyprland Auto Installer - tutisFallen
 EOF
     echo -e "${NC}"
-    print_info "Script de Instalação Automática"
-    print_info "https://github.com/tutisFallen/hypr"
     
-    echo -e "\n${YELLOW}Este script irá:${NC}"
-    echo -e "  ${CYAN}1.${NC} Atualizar o sistema"
-    echo -e "  ${CYAN}2.${NC} Instalar todos os pacotes necessários"
-    echo -e "  ${CYAN}3.${NC} Clonar e configurar o Hyprland"
-    echo -e "  ${CYAN}4.${NC} Ativar serviços necessários"
-    echo -e "  ${CYAN}5.${NC} Instalar tema SDDM Astronaut (opcional)"
-    echo -e "  ${CYAN}6.${NC} Baixar banco de wallpapers - 1.10 GB (opcional)"
-    echo -e "  ${CYAN}7.${NC} Oferecer reinicialização do sistema"
-    echo -e "\n${YELLOW}Você será perguntado se deseja pular pacotes que falharem.${NC}\n"
-    
-    read -p "Deseja continuar? (s/N): " -n 1 -r
-    echo
-    if [[ ! $REPLY =~ ^[Ss]$ ]]; then
-        print_warning "Instalação cancelada"
-        exit 0
-    fi
+    # Verificações iniciais
+    check_root
+    check_arch
+    check_internet
+    confirm_execution
     
     # Atualizar sistema
     print_header "🔄 Atualizando Sistema"
     sudo pacman -Syu --noconfirm
     
-    # Verificar e instalar yay
-    check_yay
-    
     # Instalar pacotes
-    install_official
-    install_aur
+    install_package_group "Pacotes Oficiais" PACOTES_OFICIAIS[@] "official"
+    install_yay
+    install_package_group "Pacotes AUR" PACOTES_AUR[@] "aur"
     
-    # Mostrar resumo
-    show_summary
-    
-    # Configurar Hyprland
-    setup_configs
-    
-    # Ativar serviços
+    # Configurações
+    setup_hyprland
     enable_services
-    
-    # Instalar tema SDDM
     install_sddm_theme
-    
-    # Baixar wallpapers
     download_wallpapers
     
-    # Mensagem final
-    print_header "🎉 Instalação Concluída!"
-    print_success "Todas as configurações foram aplicadas!"
-    echo -e "\n${CYAN}Dicas finais:${NC}"
-    echo -e "  ${CYAN}•${NC} Configure monitores com: ${YELLOW}nwg-displays${NC}"
-    echo -e "  ${CYAN}•${NC} Suas configs antigas (se existiam) foram backupeadas"
-    echo -e "  ${CYAN}•${NC} Wallpapers estão em: ${YELLOW}~/Pictures/Wallpapers${NC} (se instalados)"
-    echo -e "  ${CYAN}•${NC} Após reiniciar, selecione ${YELLOW}Hyprland${NC} na tela de login"
-    echo ""
-    
-    # Perguntar se quer reiniciar
+    # Relatório final
+    show_summary
     ask_reboot
 }
 
-# Executar script
+# Executar
 main
